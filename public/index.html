@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Haha</title>
+	<link rel="stylesheet" type="text/css" href="/main.css">
+</head>
+<body>
+	<form action="\" method="POST">
+		<input type="" name="name">
+		<button type="submit">
+			Submit
+		</button>
+	</form>
+	<ul></ul>
+	<script type="text/javascript">
+		const input = document.querySelector('input');
+		const form = document.querySelector('form');
+		const list = document.querySelector('ul');
+		form.addEventListener('submit', (e) => {
+			e.preventDefault();
+			const data = input.value;
+			list.innerHTML += `
+				<li>${data}</li>
+			`
+			const option = {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({
+					name: data
+				})
+			}
+			try{
+				fetch(form.action, option)
+					.then(res => res.json)
+					.then(res => console.log(res))
+					.catch(err => console.log(err))
+			}catch(err){
+				console.log('Err: ' + err);
+			}
+			
+		})
+	</script>
+</body>
+</html>
