@@ -1,14 +1,16 @@
 const express = require('express');
 const router = express.Router();
 const userController = require('../controllers/user');
+
+const { validateParams, validateBody, schemas } = require('../helpers/routerHelpers');
 router
 	.get('/', userController.index)
-	.post('/', userController.createUser)
+	.post('/', validateBody(schemas.userSchema), userController.createUser)
 router
-	.get('/:userID', userController.getUser)
-	.put('/:userID', userController.replaceUser)
-	.patch('/:userID', userController.updateUser)
+	.get('/:userID', validateParams(schemas.idSchema, 'userID'), userController.getUser)
+	.put('/:userID', validateParams(schemas.idSchema, 'userID'), validateBody(schemas.userSchema),  userController.replaceUser)
+	.patch('/:userID', validateParams(schemas.idSchema, 'userID'), validateBody(schemas.userOptionalSchema), userController.updateUser)
 router
-	.get('/:userID/decks', userController.getUserDecks)
-	.post('/:userID/decks', userController.createUserDecks)
+	.get('/:userID/decks', validateParams(schemas.idSchema, 'userID'), userController.getUserDecks)
+	.post('/:userID/decks', validateParams(schemas.idSchema, 'userID'), validateBody(schemas.deckSchema), userController.createUserDecks)
 module.exports = router;

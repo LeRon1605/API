@@ -1,5 +1,6 @@
 const User = require('../models/User');
 const Deck = require('../models/Deck');
+
 class userController{
 	// [GET] /user
 	async index(req, res, next){
@@ -13,7 +14,7 @@ class userController{
 	// [POST] /user
 	async createUser(req, res, next){
 		try{
-			const newUser = new User(req.body);
+			const newUser = new User(req.value.body);
 			await newUser.save();
 			return res.status(201).json(newUser);
 		}catch(err){
@@ -23,7 +24,7 @@ class userController{
 	// [GET] /user/:userID
 	async getUser(req, res, next){
 		try{
-			const { userID } = req.params;
+			const { userID } = req.value.params;
 			const user = await User.findById(userID).exec();
 			return res.status(200).json(user);
 		}catch(err){
@@ -33,8 +34,8 @@ class userController{
 	// [PUT] /user/:userID
 	async replaceUser(req, res, next){
 		try{
-			const { userID } = req.params;
-			const newUser = req.body;
+			const { userID } = req.value.params;
+			const newUser = req.value.body;
 			const result = await User.findByIdAndUpdate(userID, newUser);
 			return res.status(200).json({success: true});
 		}catch(err){
@@ -44,8 +45,8 @@ class userController{
 	// [PATCH] /user/:userID
 	async updateUser(req, res, next){
 		try{
-			const { userID } = req.params;
-			const newUser = req.body;
+			const { userID } = req.value.params;
+			const newUser = req.value.body;
 			const result = await User.findByIdAndUpdate(userID, newUser);
 			return res.status(200).json({success: true});
 		}catch(err){
@@ -55,27 +56,38 @@ class userController{
 
 	// [GET] /user/:userID/decks
 	async getUserDecks(req, res, next){
-		const { userID } = req.params;
+		try{
+			const { userID } = req.value.params;
+			// GET user
+			const user = await User.findById(userID).populate('decks');
+
+			return res.status(200).json(user);
+		}catch(err){
+			next(err);
+		}
 		
 	}
 	// [POST] /user/:userID/decks
 	async createUserDecks(req, res, next){
-		const { userID } = req.params;
+		try{
+			const { userID } = req.value.params;
 
-		// Get user
-		const user = await User.findById(userID).exec();
+			// Get user
+			const user = await User.findById(userID).exec();
+			// Create new deck
+			const newDeck = new Deck(req.body);
 
-		// Create new deck
-		const newDeck = new Deck(req.body);
+			// Assign onwer
+			newDeck.owner = user;
+			await newDeck.save();
 
-		// Assign onwer
-		newDeck.owner = user;
-		await newDeck.save();
+			user.decks.push(newDeck._id);
+			await user.save();
 
-		user.decks.push(newDeck._id);
-		await user.save();
-
-		return res.status(201).json(newDeck);
+			return res.status(201).json(newDeck);
+		}catch(err){
+			next(err);
+		}
 	}
 }
 

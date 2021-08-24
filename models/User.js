@@ -11,10 +11,12 @@ const User = new Schema({
 	email: {
 		type: String
 	},
-	decks: {
-		type: Array,
-		default: []
-	}
+	decks: [
+		{
+			type: Schema.Types.ObjectId,
+			ref: 'Deck'
+		}
+	]
 })
 
 module.exports = mongoose.model('User', User);
