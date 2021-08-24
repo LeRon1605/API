@@ -5,6 +5,7 @@ const port = 3000;
 const mongoClient = require('mongoose');
 // Import Routes
 const userRoute = require('./Routes/user');
+const deckRoute = require('./Routes/deck');
 
 const bodyParser = require('body-parser');
 
@@ -22,7 +23,7 @@ app.use(bodyParser.urlencoded({extended: false}))
 
 // Routes
 app.use('/user', userRoute);
-
+app.use('/deck', deckRoute);
 // Catch 404 error
 app.use((req, res, next) => {
 	const err = new Error('Not Found Page');

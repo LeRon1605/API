@@ -16,6 +16,15 @@ const schemas = {
 	deckSchema: Joi.object().keys({
 		name: Joi.string().required(),
 		description: Joi.string().required()
+	}),
+	deckOptionalSchema: Joi.object().keys({
+		name: Joi.string(),
+		description: Joi.string()
+	}),
+	newDeckSchema: Joi.object().keys({
+		name: Joi.string().required(),
+		description: Joi.string().required(),
+		owner: Joi.string().required()
 	})
 }
 
