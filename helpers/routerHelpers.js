@@ -8,6 +8,16 @@ const schemas = {
 		lastName: Joi.string().required(),
 		email: Joi.string().email().required()
 	}),
+	userSignUpSchema: Joi.object().keys({
+		firstName: Joi.string().required(),
+		lastName: Joi.string().required(),
+		email: Joi.string().email().required(),
+		password: Joi.string().required()
+	}),
+	userSignInSchema: Joi.object().keys({
+		email: Joi.string().email().required(),
+		password: Joi.string().required()
+	}),
 	userOptionalSchema: Joi.object().keys({
 		firstName: Joi.string(),
 		lastName: Joi.string(),

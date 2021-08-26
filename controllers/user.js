@@ -89,6 +89,37 @@ class userController{
 			next(err);
 		}
 	}
+	// [POST] /user/signup
+	async signUp(req, res, next){
+		try{
+			const { firstName, lastName, email, password } = req.value.body;
+
+			const foundUser = await User.findOne({email}).exec();
+			if (foundUser == null){
+				const newUser = new User({
+					firstName,
+					lastName,
+					email, 
+					password
+				})
+
+				await newUser.save();
+				return res.status(201).json({success: true});
+			}else{
+				return res.status(403).json({error: {
+					message: 'Email has already existed'
+				}})
+			}
+			
+		}catch(err){
+			next(err);
+		}
+		
+	}
+	// [POST] /user/signin
+	async signIn(req, res, next){
+		console.log('Sign In: ', req.body);
+	}
 }
 
 module.exports = new userController();
