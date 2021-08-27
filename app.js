@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const port = 3000;
 
+require('dotenv').config();
 const mongoClient = require('mongoose');
 // Import Routes
 const userRoute = require('./Routes/user');

@@ -1,6 +1,16 @@
 const User = require('../models/User');
 const Deck = require('../models/Deck');
 
+const jwt = require('jsonwebtoken');
+const encodedToken = (userID) => {
+	return jwt.sign({
+		issuer: 'Ron Le',
+		sub: userID,
+		iat: new Date().getTime(),
+		exp: new Date().setDate(new Date().getDate() + 3)
+	}, process.env.JWT_SECRET)
+}
+
 class userController{
 	// [GET] /user
 	async index(req, res, next){
@@ -102,8 +112,10 @@ class userController{
 					email, 
 					password
 				})
-
 				await newUser.save();
+
+				const token = encodedToken(newUser._id);
+				res.setHeader('Authorization', token);
 				return res.status(201).json({success: true});
 			}else{
 				return res.status(403).json({error: {
@@ -118,7 +130,12 @@ class userController{
 	}
 	// [POST] /user/signin
 	async signIn(req, res, next){
-		console.log('Sign In: ', req.body);
+		const token = encodedToken(req.user._id);
+		res.setHeader('Authorization', token);
+		return res.status(200).json({ success: true})
+	}
+	async secret(req, res, next){
+		return res.status(200).json({ resouces: true });
 	}
 }
 
