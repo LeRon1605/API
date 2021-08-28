@@ -6,42 +6,16 @@
 	<link rel="stylesheet" type="text/css" href="/main.css">
 </head>
 <body>
-	<form action="\" method="POST">
-		<input type="" name="name">
-		<button type="submit">
-			Submit
-		</button>
-	</form>
-	<ul></ul>
-	<script type="text/javascript">
-		const input = document.querySelector('input');
-		const form = document.querySelector('form');
-		const list = document.querySelector('ul');
-		form.addEventListener('submit', (e) => {
-			e.preventDefault();
-			const data = input.value;
-			list.innerHTML += `
-				<li>${data}</li>
-			`
-			const option = {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify({
-					name: data
-				})
-			}
-			try{
-				fetch(form.action, option)
-					.then(res => res.json)
-					.then(res => console.log(res))
-					.catch(err => console.log(err))
-			}catch(err){
-				console.log('Err: ' + err);
-			}
-			
-		})
+	<div class="g-signin2" data-onsuccess="onSignIn"></div>
+	<meta name="google-signin-client_id" content="761309592992-i3k4t19a51vska58200ivv9t4tl3cndj.apps.googleusercontent.com">
+	<script src="https://apis.google.com/js/platform.js" async defer>
+		function onSignIn(googleUser) {
+		  	var profile = googleUser.getBasicProfile();
+		  	console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+		  	console.log('Name: ' + profile.getName());
+		  	console.log('Image URL: ' + profile.getImageUrl());
+		 	console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+		}
 	</script>
 </body>
 </html>

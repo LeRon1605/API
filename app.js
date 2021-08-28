@@ -21,8 +21,11 @@ mongoClient.connect('mongodb://localhost:27017/nodejs', {
 // Middleware
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}))
-
+app.use(express.static('public'))
 // Routes
+app.get('/', (req, res, next) => {
+	res.sendFile('./public/index.html');
+})
 app.use('/user', userRoute);
 app.use('/deck', deckRoute);
 // Catch 404 error

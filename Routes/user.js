@@ -11,6 +11,8 @@ router
 router
 	.post('/signup', validateBody(schemas.userSignUpSchema), userController.signUp)
 router
+	.post('/auth/google', passport.authenticate('google-plus-token', {session: false}), userController.authGoogle)
+router
 	.post('/signin',validateBody(schemas.userSignInSchema),  passport.authenticate('local', {session: false}),userController.signIn)
 router
 	.get('/secret', passport.authenticate('jwt', { session: false }), userController.secret)

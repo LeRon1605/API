@@ -4,7 +4,7 @@ const Deck = require('../models/Deck');
 const jwt = require('jsonwebtoken');
 const encodedToken = (userID) => {
 	return jwt.sign({
-		issuer: 'Ron Le',
+		iss: 'Ron Le',
 		sub: userID,
 		iat: new Date().getTime(),
 		exp: new Date().setDate(new Date().getDate() + 3)
@@ -136,6 +136,12 @@ class userController{
 	}
 	async secret(req, res, next){
 		return res.status(200).json({ resouces: true });
+	}
+	// [GET] /user/auth/google
+	async authGoogle(req, res, next){
+		const token = encodedToken(req.user._id);
+		res.setHeader('Authorization', token);
+		return res.status(201).json({success: true})
 	}
 }
 

@@ -21,6 +21,32 @@ passport.use(new JWTStrategy({
 	}
 }))
 
+// Passport Google Plus Token
+passport.use(new GooglePlusTokenStrategy({
+	clientID: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    passReqToCallback: true
+}, async (req, accessToken, refreshToken, profile, done) => {
+
+	// Check whether this user is exist in db or not
+	const isExistUser = await User.findOne({
+		authGoogleID: profile.id,
+		authType: 'google'
+	})
+
+	if (isExistUser) return done(null, isExistUser);
+	else{
+		const newUser = new User({
+			authType: 'google',
+			email: profile.emails[0].value,
+			authGoogleID: profile.id,
+			password: '12345678'
+		})
+		await newUser.save();
+		return done(null, newUser);
+	}
+}))
+
 // Passport local
 passport.use(new localStrategy({
 	usernameField: 'email'
