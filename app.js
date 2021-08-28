@@ -7,7 +7,7 @@ const mongoClient = require('mongoose');
 // Import Routes
 const userRoute = require('./Routes/user');
 const deckRoute = require('./Routes/deck');
-
+const mainRoute = require('./Routes/mainRoute');
 const bodyParser = require('body-parser');
 
 // Connect to mongoDB
@@ -23,9 +23,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}))
 app.use(express.static('public'))
 // Routes
-app.get('/', (req, res, next) => {
-	res.sendFile('./public/index.html');
-})
+app.use('/', mainRoute)
 app.use('/user', userRoute);
 app.use('/deck', deckRoute);
 // Catch 404 error
@@ -36,7 +34,7 @@ app.use((req, res, next) => {
 })
 // Error handler function
 app.use((err, req, res, next) => {
-	console.log(err);
+	console.log(req.url);
 	const error = (app.get('env') === 'development') ? err : {};
 	const status = err.status || 500;
 

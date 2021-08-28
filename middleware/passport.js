@@ -1,7 +1,7 @@
 const passport = require('passport');
 const JWTStrategy = require('passport-jwt').Strategy;
 const localStrategy = require('passport-local').Strategy;
-const GooglePlusTokenStrategy = require('passport-google-plus-token');
+const GoogleStrategy = require( 'passport-google-oauth2' ).Strategy;
 const { ExtractJwt } = require('passport-jwt');
 
 const User = require('../models/User');
@@ -22,12 +22,12 @@ passport.use(new JWTStrategy({
 }))
 
 // Passport Google Plus Token
-passport.use(new GooglePlusTokenStrategy({
+passport.use(new GoogleStrategy({
 	clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    passReqToCallback: true
+    callbackURL: "http://localhost:3000/user/auth/google",
+    passReqToCallback : true
 }, async (req, accessToken, refreshToken, profile, done) => {
-
 	// Check whether this user is exist in db or not
 	const isExistUser = await User.findOne({
 		authGoogleID: profile.id,
@@ -46,7 +46,6 @@ passport.use(new GooglePlusTokenStrategy({
 		return done(null, newUser);
 	}
 }))
-
 // Passport local
 passport.use(new localStrategy({
 	usernameField: 'email'

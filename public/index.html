@@ -6,16 +6,6 @@
 	<link rel="stylesheet" type="text/css" href="/main.css">
 </head>
 <body>
-	<div class="g-signin2" data-onsuccess="onSignIn"></div>
-	<meta name="google-signin-client_id" content="761309592992-i3k4t19a51vska58200ivv9t4tl3cndj.apps.googleusercontent.com">
-	<script src="https://apis.google.com/js/platform.js" async defer>
-		function onSignIn(googleUser) {
-		  	var profile = googleUser.getBasicProfile();
-		  	console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-		  	console.log('Name: ' + profile.getName());
-		  	console.log('Image URL: ' + profile.getImageUrl());
-		 	console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
-		}
-	</script>
+	<a href="/google">Đăng nhập với Google</a>
 </body>
 </html>
