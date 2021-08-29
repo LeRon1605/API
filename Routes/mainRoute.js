@@ -3,10 +3,12 @@ const router = express.Router();
 const passport = require('passport');
 const passportConfig = require('../middleware/passport');
 router.get('/', (req, res, next) => {
-	res.sendFile('/public/index.html')
+	res.stautus(200).sendFile('/public/index.html')
 })
-router.get('/google',
+router.get('/auth/google',
   passport.authenticate('google', { scope:
       [ 'email', 'profile', 'openid' ] }
 ));
+router.get('/auth/facebook', 
+  passport.authenticate('facebook'), (req, res, next) => res.status(200));
 module.exports = router;

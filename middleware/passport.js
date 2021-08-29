@@ -2,6 +2,7 @@ const passport = require('passport');
 const JWTStrategy = require('passport-jwt').Strategy;
 const localStrategy = require('passport-local').Strategy;
 const GoogleStrategy = require( 'passport-google-oauth2' ).Strategy;
+const FacebookStrategy = require('passport-facebook');
 const { ExtractJwt } = require('passport-jwt');
 
 const User = require('../models/User');
@@ -46,6 +47,17 @@ passport.use(new GoogleStrategy({
 		return done(null, newUser);
 	}
 }))
+// Passport Facebook
+passport.use(new FacebookStrategy({
+    clientID: process.env.FACEBOOK_CLIENT_ID,
+    clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
+    callbackURL: "http://localhost:3000/user/auth/facebook",
+    profileFields: ['id', 'displayName', 'photos', 'email']
+  },
+  function(accessToken, refreshToken, profile, cb) {
+    console.log(profile);
+  }
+));
 // Passport local
 passport.use(new localStrategy({
 	usernameField: 'email'

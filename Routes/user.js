@@ -11,6 +11,8 @@ router
 router
 	.post('/signup', validateBody(schemas.userSignUpSchema), userController.signUp)
 router
+	.get('/auth/facebook', passport.authenticate('facebook'), userController.authFacebook);
+router
 	.get('/auth/google', passport.authenticate('google', {session: false, failureRedirect: '/'}), userController.authGoogle)
 router
 	.post('/signin',validateBody(schemas.userSignInSchema),  passport.authenticate('local', {session: false}),userController.signIn)

@@ -143,6 +143,10 @@ class userController{
 		res.setHeader('Authorization', token);
 		return res.status(201).json({success: true})
 	}
+	// [POST] /user/auth/facebook
+	async authFacebook(req, res, next){
+		
+	}
 }
 
 module.exports = new userController();
