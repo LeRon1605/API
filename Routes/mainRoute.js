@@ -10,5 +10,5 @@ router.get('/auth/google',
       [ 'email', 'profile', 'openid' ] }
 ));
 router.get('/auth/facebook', 
-  passport.authenticate('facebook'), (req, res, next) => res.status(200));
+  passport.authenticate('facebook'));
 module.exports = router;

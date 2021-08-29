@@ -11,7 +11,7 @@ router
 router
 	.post('/signup', validateBody(schemas.userSignUpSchema), userController.signUp)
 router
-	.get('/auth/facebook', passport.authenticate('facebook'), userController.authFacebook);
+	.get('/auth/facebook', passport.authenticate('facebook', { session: false }), userController.authFacebook);
 router
 	.get('/auth/google', passport.authenticate('google', {session: false, failureRedirect: '/'}), userController.authGoogle)
 router

@@ -51,11 +51,29 @@ passport.use(new GoogleStrategy({
 passport.use(new FacebookStrategy({
     clientID: process.env.FACEBOOK_CLIENT_ID,
     clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
-    callbackURL: "http://localhost:3000/user/auth/facebook",
+    callbackURL: 'http://localhost:3000/user/auth/facebook',
     profileFields: ['id', 'displayName', 'photos', 'email']
-  },
-  function(accessToken, refreshToken, profile, cb) {
-    console.log(profile);
+  }, async (accessToken, refreshToken, profile, done) => {
+    try{
+		const isExistUser = await User.findOne({
+			authType: 'facebook',
+			authFacebookID: profile.id,
+			email: profile.emails[0].value
+		});
+		if (isExistUser) return done(null, isExistUser);
+		else{
+			const newUser = new User({
+				authType: 'facebook',
+				authFacebookID: profile.id,
+				email: profile.emails[0].value,
+				password: '334566666'
+			});
+			await newUser.save();
+			return done(null, newUser);
+		}
+	}catch(err){
+		done(err);
+	}
   }
 ));
 // Passport local

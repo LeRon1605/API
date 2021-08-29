@@ -145,7 +145,8 @@ class userController{
 	}
 	// [POST] /user/auth/facebook
 	async authFacebook(req, res, next){
-		
+		console.log(req.user);
+		return res.status(200).json({success: true});
 	}
 }
 
